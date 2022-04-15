@@ -1,0 +1,256 @@
+#include <stdio.h>
+#include <cstdlib>
+#include <string>
+#include <iostream>
+#include <stdlib.h>
+#include <string.h>
+
+using namespace std;
+class puntero{
+  public:
+
+  typedef struct NodoLista {
+
+  char Nombre[50];
+
+  struct NodoLista *Siguiente;
+
+} Nodo;
+
+  int InsertarElemento(Nodo **);
+
+  void ListarElementos(Nodo *);
+
+  int BorrarElementoListaFinal(Nodo **);
+
+  int BorrarElementoListaPrincipio(Nodo **);
+
+  int BorrarElementoIntermedio(Nodo **);
+
+
+};
+
+
+// Predefinición de funciones
+
+
+// Función principal
+int main(int argc, char *argv[])
+
+{
+  puntero punt;
+    // Crear el puntero Raíz de la lista
+    // y se inicializa a nulo como valor
+    // inicial
+    puntero::Nodo *Inicio = NULL;
+    // Crear una variable para solicitar las
+    // opciones del menú
+    int opcion=0;
+    int opcion2=0;
+    // Visualizar el menu de opciones
+    do {
+        cout<<"\n1.- Insertar elemento en la lista.";
+        cout<<"\n2.- Listar elementos de la lista.";
+        cout<<"\n3.- Borrar elemento de la lista.";
+        cout<<"\n0.- Salir del programa.";
+        cout<<"\n=====================================";
+        cout<<"\nOpcion ...: ";
+        cin>>opcion;
+        switch(opcion) {
+
+          case 1:
+               // Insertar elemento de la lista
+               // El puntero de inicio se ha de pasar por referencia
+               // ya que es puede verse afectado si se inserta el primer
+               // elemento de la lista
+               punt.InsertarElemento(&Inicio);
+               break;
+
+          case 2:
+
+               // Listar elementos de la lista
+               punt.ListarElementos(Inicio);
+               break;
+          case 3:
+               cout<<("\n(0) Volver Menu Anterior.");
+               cout<<("\n(1) Borrar al final.");
+               cout<<("\n(2) Borrar al principio.");
+               cout<<("\n(3) Borrar Intermedio.");
+               cout<<("\n.... ");
+               cin>>opcion2;
+;
+
+               switch(opcion2) {
+
+                 case 1:
+
+                      punt.BorrarElementoListaFinal(&Inicio);
+
+                      break;
+
+                 case 2:
+
+                      punt.BorrarElementoListaPrincipio(&Inicio);
+
+                      break;
+                 case 3:
+
+                      punt.BorrarElementoIntermedio(&Inicio);
+                      break;
+               }
+               break;
+        }
+    } while(opcion!=0);
+  system("PAUSE" );
+  return 0;
+
+}
+
+int puntero::InsertarElemento(Nodo **Inicio)
+{
+     Nodo *Elemento = NULL;
+     Nodo *Recorrer = NULL;
+     Nodo *Ultimo = NULL;
+     
+     Recorrer = *Inicio;
+     while(Recorrer!=NULL) {
+       Ultimo = Recorrer;
+       Recorrer=Recorrer->Siguiente;
+     }
+     // Creamos el nuevo nodo o elemento que se quiere
+     // insertar
+     Elemento = (Nodo *)malloc(sizeof(Nodo));
+     
+     if(Elemento == NULL ) return -1;
+    
+     cout<<"\nTeclear Nombre : ";
+     cin>>Elemento->Nombre;
+     
+     Elemento->Siguiente = NULL;
+  
+     if (Ultimo == NULL ) {
+        // Es el primero de la lista
+        *Inicio = Elemento;
+     } else {
+        // Es el ultimo de la lista
+       Ultimo->Siguiente = Elemento;
+     }
+     // Salir de la función sin errores
+     return 0;
+}
+
+
+void puntero::ListarElementos(Nodo *Inicio)
+{
+    
+     Nodo *Recorrer = Inicio;
+     // Se visualiza un mensaje
+     cout<<"\nListado de elementos de la lista";
+     cout<<"\n===================================";
+
+     while(Recorrer!=NULL)
+     {
+        // Se visualiza el elemento
+        cout<<"\n"<<Recorrer->Nombre;
+        // Se cambia al elemento siguiente
+        Recorrer=Recorrer->Siguiente;
+     }
+     cout<<"\n===================================\n";
+}
+// Función Borrar elemento de la lista al principio
+int puntero::BorrarElementoListaPrincipio(Nodo **Inicio)
+{
+    // Variable para almacenar el elemento a borrar
+    Nodo *Borrar=NULL;
+    // Se comprueba si el puntero de inicio apunta a
+    // algún elemento si es así es que existen elementos
+    // y se puede borrar el primero en caso contrario
+    // no existe ningún elemento y no se puede borrar nada
+    if (*Inicio==NULL) {
+       cout<<"\nNo hay elementos que borrar\n";
+       return -1;
+    } else {
+      Borrar = *Inicio;
+      *Inicio = (*Inicio)->Siguiente;
+      free (Borrar);
+    }
+    return 0;
+}
+// Función Borrar elemento de la lista al final
+int puntero::BorrarElementoListaFinal(Nodo **Inicio)
+{
+    Nodo *Borrar=NULL;;
+    Nodo *Recorrer=NULL;
+    Recorrer=*Inicio;
+    if(Recorrer==NULL) {
+     cout<<"\nNo existen elementos que borrar\n";
+     return -1;
+    }
+    // Mientras no se llegue al ultimo elemento
+    while(Recorrer->Siguiente!=NULL) {
+      Borrar = Recorrer;
+      Recorrer= Recorrer->Siguiente;
+    }
+    // Si borrar es null es que solo existe un elemento
+   // y por tanto el valor de inicio ha de cambiar si no
+   // es así existen mas elementos y se ha borrar el ultimo
+   if(Borrar==NULL) {
+       Borrar = *Inicio;
+      *Inicio = NULL;
+      free (Borrar);
+   } else {
+     free(Borrar->Siguiente);
+     Borrar->Siguiente=NULL;
+   }
+    return 0;
+}
+
+
+// Función Borrar elemento de la lista al principio
+int puntero::BorrarElementoIntermedio(Nodo **Inicio)
+{
+    // Variables para usar la lista
+    Nodo *Recorrer=NULL;
+    Nodo *Borrar=NULL;
+    Nodo *Anterior=NULL;
+    // Variable para solicitar el elemento a borrar
+    char NombreBuscar[30];
+    int encontrado=0;
+    // Solicitar el nombre a eliminar
+    cout<<"\nNombre a eliminar: ";
+    cin>>NombreBuscar;
+    // Se comprueba si el puntero de inicio apunta a
+    // algún elemento si es así es que existen elementos
+    // y se puede borrar el primero en caso contrario
+    // no existe ningún elemento y no se puede borrar nada
+    if (*Inicio==NULL) {
+       cout<<"\nNo hay elementos que borrar\n";
+       return -1;
+    } else {
+        // Recorrer la lista buscando el elemento
+        cout<<"\nBuscando: %s "<<NombreBuscar;
+        Recorrer = *Inicio;
+        Anterior = *Inicio;
+        while(Recorrer!=NULL && encontrado==0)
+        {
+            // Se visualiza el elemento
+            cout<<(".");
+            if(strcmp(Recorrer->Nombre,NombreBuscar)==0) {
+                cout<<" (Encontrado Ok)\n";
+                encontrado=1;
+                Borrar = Recorrer;
+                if(Recorrer==*Inicio) {
+                    *Inicio = Recorrer->Siguiente;
+                } else {
+                    Anterior->Siguiente = Borrar->Siguiente;
+                }
+                free(Borrar);
+            } else {
+                // Se cambia al elemento siguiente
+                Anterior = Recorrer;
+                Recorrer=Recorrer->Siguiente;
+            }
+        }
+    }
+    return 0;
+  } 

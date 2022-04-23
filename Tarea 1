@@ -1,0 +1,392 @@
+#include <iostream>
+#include <fstream>
+#include <cstring>
+#include <stdio.h>
+
+
+
+using std::cout; using std::ofstream;
+using std::endl; using std::string;
+using std::fstream;
+
+using namespace std;
+int main() {
+    int personas=1;
+    float promedio;
+    int asignatura;
+    int opc1;
+    int opc2;
+    int opc3;
+    int opc4;
+    int asignatura1;
+    int num_notas=4;
+    float nota;
+    float suma;
+    string nombres;
+    string ramo;
+    string guardar_ramo[20];
+    string guardar_nombres[20];
+    float guardar_promedio[10];
+
+    int i=0;
+    int e=1;
+    int r=2;
+
+    string asig;
+    cout<<"Sistema de Notas \n";
+    cout<<"1. Profesor \n";
+    cout<<"2. Estudiante \n";
+    cout<<"3. Salir \n";
+    cout<<"Seleccionar Opcion: ";
+    cin>>opc1;
+    switch (opc1) {
+        case 1:
+            cout << "elija la asignatura \n";
+            cout << "1-PROGRAMACION \n";
+            cout << "2-BASE DE DATOS \n";
+            cout << "3-ALGORITMO Y ESTRUCTURA DE DATOS \n";
+            cout << "4-DESARROLLO WEB Y MOBIL \n";
+            cout << "5-PARADIGMAS DE PROGRAMACION \n";
+            cin >> asignatura;
+            while (asignatura != 0) {
+                if (asignatura = 1) {
+                    jump:
+                    printf("Ingrese nombre del alumno: ");
+                    cin >> nombres;
+                    cout << "Agrege las notas de " << nombres << " en la asignatura de PROGRAMACION" << "\n";
+                    ramo = "PROGRAMACION";
+
+                    while (i < num_notas) {
+                        cout << "Nota: " << i << "\n";
+                        cin >> nota;
+                        suma = suma + nota;
+                        i = i + 1;
+                    }
+                    promedio = suma / num_notas;
+                    cout << "El promedio de " << nombres << " es de: " << promedio << "\n";
+
+                    while (e < r) {
+                        guardar_ramo[e] = ramo;
+                        guardar_promedio[e] = promedio;
+                        guardar_nombres[e] = nombres;
+                        cout << "Nombre: " << guardar_nombres[e] << "\n";
+                        cout << "Asignatura: " << ramo << "\n";
+                        cout << "Promedio: " << guardar_promedio[e] << "\n";
+                        e = e + 1;
+                        ramo == " ";
+                    }
+                    cout << "Desea calcular mas promedios?(1 si, 2 no)";
+                    cin >> opc4;
+                    if (opc4 == 1) {
+                        cout << " ¿Elegir otra asignatura?() " "\n";
+                        cout << "1-PROGRAMACION \n";
+                        cout << "2-BASE DE DATOS \n";
+                        cout << "3-ALGORITMO Y ESTRUCTURA DE DATOS \n";
+                        cout << "4-DESARROLLO WEB Y MOBIL \n";
+                        cout << "5-PARADIGMAS DE PROGRAMACION \n";
+                        cout << "Elija la asignatura: \n";
+                        if (asignatura != 0) {
+                            r = r + 1;
+                            i = 0;
+                            suma = 0;
+                            personas=personas+1;
+
+                        }
+                        cin >> asignatura;
+                        if (asignatura == 1) {
+                            goto jump;
+                        } else if (asignatura == 2) {
+                            goto jump1;
+                        } else if (asignatura == 3) {
+                            goto jump2;
+                        } else if (asignatura == 4) {
+                            goto jump3;
+                        } else if (asignatura == 5) {
+                            goto jump4;
+                        }
+
+                    } else {
+                        break;
+
+                    }
+
+
+                } else if (asignatura = 2) {
+                    jump1:
+                    printf("Ingrese nombre del alumno: ");
+                    cin >> nombres;
+                    cout << "Agrege las notas de " << nombres << " En la asignatura de BASE DE DATOS" << "\n";
+                    ramo = "BASE DE DATOS";
+
+                    while (i < num_notas) {
+                        cout << "Nota: " << i << "\n";
+                        cin >> nota;
+                        suma = suma + nota;
+                        i = i + 1;
+                    }
+                    promedio = suma / num_notas;
+                    cout << "El promedio de " << nombres << " es de: " << promedio << "\n";
+
+                    while (e < r) {
+                        guardar_ramo[e] = ramo;
+                        guardar_promedio[e] = promedio;
+                        guardar_nombres[e] = nombres;
+                        cout << "Nombre: " << guardar_nombres[e] << "\n";
+                        cout << "Asignatura: " << guardar_ramo[e] << "\n";
+                        cout << "Promedio: " << guardar_promedio[e] << "\n";
+                        e = e + 1;
+
+                    }
+
+                    printf("Desea calcular mas promedios?(1. Si, 2. No)");
+                    cin >> opc4;
+                    if (opc4 == 1) {
+                        cout << " ¿Elegir otra asignatura?() " "\n";
+                        cout << "1-PROGRAMACION \n";
+                        cout << "2-BASE DE DATOS \n";
+                        cout << "3-ALGORITMO Y ESTRUCTURA DE DATOS \n";
+                        cout << "4-DESARROLLO WEB Y MOBIL \n";
+                        cout << "5-PARADIGMAS DE PROGRAMACION \n";
+                        cout << "Elija la asignatura \n";
+                        if (asignatura != 0) {
+                            r = r + 1;
+                            i = 0;
+                            suma = 0;
+                            personas=personas+1;
+                        }
+                        cin >> asignatura;
+                        if (asignatura == 1) {
+                            goto jump;
+                        } else if (asignatura == 2) {
+                            goto jump1;
+                        } else if (asignatura == 3) {
+                            goto jump2;
+                        } else if (asignatura == 4) {
+                            goto jump3;
+                        } else if (asignatura == 5) {
+                            goto jump4;
+                        }
+                    } else {
+                        break;
+
+                    }
+                } else if (asignatura = 3) {
+                    jump2:
+                    printf("Ingrese nombre del alumno: ");
+                    cin >> nombres;
+                    cout << "Agrege las notas de " << nombres << " en la asignatura de ALGORITMO Y ESTRUCTURA DE DATOS "
+                         << "\n";
+                    ramo = "ALGORITMO Y ESTRUCTURA DE DATOS";
+
+                    while (i < num_notas) {
+                        cout << "Nota: " << i << "\n";
+                        cin >> nota;
+                        suma = suma + nota;
+                        i = i + 1;
+                    }
+                    promedio = suma / num_notas;
+                    cout << "El promedio de " << nombres << " es de: " << promedio << "\n";
+
+                    while (e < r) {
+                        guardar_ramo[e] = ramo;
+                        guardar_promedio[e] = promedio;
+                        guardar_nombres[e] = nombres;
+                        cout << "Nombre: " << guardar_nombres[e] << "\n";
+                        cout << "Asignatura: " << guardar_ramo[e] << "\n";
+                        cout << "Promedio: " << guardar_promedio[e] << "\n";
+                        e = e + 1;
+
+                    }
+
+                    printf("Desea calcular mas promedios?(1 si, 2 no)");
+                    cin >> opc4;
+                    if (opc4 == 1) {
+                        cout << " Elegir otra asignatura?() " "\n";
+                        cout << "1-PROGRAMACION \n";
+                        cout << "2-BASE DE DATOS \n";
+                        cout << "3-ALGORITMO Y ESTRUCTURA DE DATOS \n";
+                        cout << "4-DESARROLLO WEB Y MOBIL \n";
+                        cout << "5-PARADIGMAS DE PROGRAMACION \n";
+                        cout << "Elija la asignatura \n";
+                        if (asignatura != 0) {
+                            r = r + 1;
+                            i = 0;
+                            suma = 0;
+                            personas=personas+1;
+                        }
+                        cin >> asignatura;
+                        if (asignatura == 1) {
+                            goto jump;
+                        } else if (asignatura == 2) {
+                            goto jump1;
+                        } else if (asignatura == 3) {
+                            goto jump2;
+                        } else if (asignatura == 4) {
+                            goto jump3;
+                        } else if (asignatura == 5) {
+                            goto jump4;
+                        }
+                    } else {
+                        break;
+
+                    }
+                } else if (asignatura = 4) {
+                    jump3:
+                    printf("Ingrese nombre del alumno: ");
+                    cin >> nombres;
+                    cout << "Agrege las notas de " << nombres << " en la asignatura DESARROLLO WEB Y MOBIL" << "\n";
+                    ramo = "DESARROLLO WEB Y MOBIL";
+
+                    while (i < num_notas) {
+                        cout << "Nota: " << i << "\n";
+                        cin >> nota;
+                        suma = suma + nota;
+                        i = i + 1;
+                    }
+                    promedio = suma / num_notas;
+                    cout << "El promedio de " << nombres << " es de: " << promedio << "\n";
+
+                    while (e < r) {
+                        guardar_ramo[e] = ramo;
+                        guardar_promedio[e] = promedio;
+                        guardar_nombres[e] = nombres;
+                        cout << "Nombre: " << guardar_nombres[e] << "\n";
+                        cout << "Asignatura: " << guardar_ramo[e] << "\n";
+                        cout << "Promedio: " << guardar_promedio[e] << "\n";
+                        e = e + 1;
+
+                    }
+
+                    printf("¿Desea calcular mas promedios?(1 si, 2 no)");
+                    cin >> opc4;
+                    if (opc4 == 1) {
+                        cout << " ¿Elegir otra asignatura?() " "\n";
+                        cout << "1-PROGRAMACION \n";
+                        cout << "2-BASE DE DATOS \n";
+                        cout << "3-ALGORITMO Y ESTRUCTURA DE DATOS \n";
+                        cout << "4-DESARROLLO WEB Y MOBIL \n";
+                        cout << "5-PARADIGMAS DE PROGRAMACION \n";
+                        cout << "Elija la asignatura: \n";
+                        if (asignatura != 0) {
+                            r = r + 1;
+                            i = 0;
+                            suma = 0;
+                            personas=personas+1;
+                        }
+                        cin >> asignatura;
+                        if (asignatura == 1) {
+                            goto jump;
+                        } else if (asignatura == 2) {
+                            goto jump1;
+                        } else if (asignatura == 3) {
+                            goto jump2;
+                        } else if (asignatura == 4) {
+                            goto jump3;
+                        } else if (asignatura == 5) {
+                            goto jump4;
+                        }
+                    } else {
+                        break;
+
+                    }
+
+                } else if (asignatura = 5) {
+                    jump4:
+                    printf("Ingrese nombre del alumno: ");
+                    cin >> nombres;
+                    cout << "Agrege las notas de " << nombres << " en la asignatura PARADIGMAS DE PROGRAMACION" << "\n";
+                    ramo = "PARADIGMAS DE PROGRAMACION";
+
+                    while (i < num_notas) {
+                        cout << "Nota: " << i << "\n";
+                        cin >> nota;
+                        suma = suma + nota;
+                        i = i + 1;
+                    }
+                    promedio = suma / num_notas;
+                    cout << "El promedio de " << nombres << " es de: " << promedio << "\n";
+
+                    while (e < r) {
+                        guardar_ramo[e] = ramo;
+                        guardar_promedio[e] = promedio;
+                        guardar_nombres[e] = nombres;
+                        cout << "Nombre: " << guardar_nombres[e] << "\n";
+                        cout << "Asignatura: " << guardar_ramo[e] << "\n";
+                        cout << "Promedio: " << guardar_promedio[e] << "\n";
+                        e = e + 1;
+
+                    }
+
+                    printf("¿Desea calcular mas promedios?(1 si, 2 no)");
+                    cin >> opc4;
+                    if (opc4 == 1) {
+                        cout << " ¿Elegir otra asignatura?() " "\n";
+                        cout << "1-PROGRAMACION \n";
+                        cout << "2-BASE DE DATOS \n";
+                        cout << "3-ALGORITMO Y ESTRUCTURA DE DATOS \n";
+                        cout << "4-DESARROLLO WEB Y MOBIL \n";
+                        cout << "5-PARADIGMAS DE PROGRAMACION \n";
+                        cout << "Elija la asignatura: \n";
+                        if (asignatura != 0) {
+                            r = r + 1;
+                            i = 0;
+                            suma = 0;
+                            personas=personas+1;
+                        }
+                        cin >> asignatura;
+                        if (asignatura == 1) {
+                            goto jump;
+                        } else if (asignatura == 2) {
+                            goto jump1;
+                        } else if (asignatura == 3) {
+                            goto jump2;
+                        } else if (asignatura == 4) {
+                            goto jump3;
+                        } else if (asignatura == 5) {
+                            goto jump4;
+                        }
+                    } else {
+                        break;
+
+                    }
+                }
+            }
+            cout << "Quiere elegir otra opcion?(1 si, 2 no) " "\n";
+            cin >> opc2;
+            if (opc2 == 1) {
+                cout << "Sistema de Notas \n";
+                cout << "1. Profesor \n";
+                cout << "2. Estudiante \n";
+                cout << "3. Salir \n";
+                cout << "Seleccionar Opcion: ";
+                cin >> opc1;
+            } else {
+                break;
+            }
+        case 2:{
+            ofstream fichero("tmp.txt");
+            for (int e = 1; e <= personas; ++e) {
+
+                fichero << guardar_nombres[e];
+                fichero <<" Asignatura de: ";
+                fichero << guardar_ramo[e];
+                fichero <<" Tiene un promedio de:  ";
+                fichero << guardar_promedio[e];
+                if (guardar_promedio[e]<39.5){
+                    fichero <<" Reprobado"<< endl;
+                }
+                else{
+                    fichero <<" Reprobado"<< endl;
+                }
+            }
+
+
+
+
+        }
+        case 3:
+            cout<<"Saliendo del sistema";
+    }
+
+    return 0;
+}

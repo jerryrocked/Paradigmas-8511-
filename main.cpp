@@ -1,211 +1,357 @@
 #include <iostream>
-#include <string.h>
-#include <fstream>
+#include <stdio.h>
 #include <cstdlib>
 #include <cstdio>
-
+#include <cmath>
+#include <fstream>
+#include <vector>
+#include <iostream>
+#include <sstream>
+#include <string>
 using namespace std;
-fstream f;
 
-class Persona{
-    public:
-        string nombre[50];
-        string rut[50];
-        int i=0;
-    void registrar(); // registrar nuevo usuario // TRUE
-    void mostrar_df(); // TRUE
-}; // TRUE
+string line;
+string text;
+string subLine;
 
-class alumno : public Persona{
-    public:
-        int seccion; // 1, 2 o 3
-    void soli_nota(); // funcion para pedir sus notas // TRUE
-}; // TRUE
+//Aqui definiremos las clases
+class Person{
+	public:
+		string name, rut;
+};
+class Professor: public Person{
+	public:
+		string section;
+};
 
-class Materia{
-    public:
-        string nrc[3] = {"01.","02.","03."};
-        string ID[5] = {"PR001","BD002","AE003","DM004","PP005"};
-        string materia_nombres[5] = {"PROGRAMACION","BASE DE DATOS", "ALGORITMO Y ESTRUCTURA DE DATOS", "DESARROLLO WEB Y MOBIL", "PARADIGMA DE PROGRAMACION"};
+class Student: public Person{
+	public:
+		string sections[60];
+		string averages[60]; 
+    vector<string> notas;
+    Student(string _name, string _rut, vector<string> _notas); //Contructor
+    ~Student(){}; //Destructor
+};
 
-}; // TRUE
+Student::Student(string _name, string _rut, vector<string> _notas){
+  this->name = _name;
+  this->rut = _rut;
+  this->notas = _notas;
+}
 
-class Profesor : public Persona,public Materia{
-    public:
-        void crear_file(); // TRUE
-        void nota_alumno(string rut2, int materia); // TRUE
-        void cargar_file(); // TRUE
-    private:
-        float ND,nt[4]; // promedio y notas
-    void calcular_ND(); // TRUE
-}; // TRUE
+class Subject{
+	string name;
+	string code;
+};
 
-void Profesor::calcular_ND(){
-    ND = nt[0] + nt[1] + nt[2] + nt[3];
-    ND = ND / 4;
-} // TRUE
+struct Secciones{
+  vector<Student> Alumnos_PR001;
+  vector<Student> Alumnos_BD002;
+  vector<Student> Alumnos_AE003;
+  vector<Student> Alumnos_DM004;
+  vector<Student> Alumnos_PP005;
+};
 
-void alumno::soli_nota(){
-    while(true){
-        string name;
-        cout<<"Ingrese su rut: ";
-        cin>>name;
-        name += ".txt";
-        cout<<endl;
-        ifstream f;
-        string line;
-        f.open(name,ios::in);
-        if(f.fail()){cout<<"El profesor no ha subido sus notas.\n";break;}
-        while(!f.eof()){
-            getline(f,line);
-            cout<<line<<endl;
-        }
-    cout<<"\nListo :D\n";
-    break;
+//Asignaturas
+string subj[5]= {"Programacion", "Base de Datos", "Algoritmo y E.", "Desarrollo Web", "Paradigmas de P."};
+string cod[5]= {"PR001", "BD002", "AE003", "DM004", "PP005"};
+
+//Funcion para elegir modo en que entra el usuario 
+
+void menuDocente(Secciones Sec);
+void menuAlumno(Secciones Sec);
+void menu(Secciones Sec);
+bool buscarSeccion(string sec);
+vector<Student> CrearAlumnos(string name);
+bool archivo_existe(string nombre);
+float ObtenerPromedio(vector<Student> S, int pos);
+void OrdenarNotas(vector<Student> verE);
+
+int main(){
+  Secciones Sec;
+	menu(Sec);
+	return 0;
+}
+
+void menu(Secciones Sec){
+  string option;
+  cout<<"--------------------------------"<<endl;
+  cout<<"Seleccione una opcion: "<<endl;
+  cout<<"- Alumno(1)"<<endl;
+  cout<<"- Docente(2)"<<endl;
+  cout<<"--------------------------------"<<endl;
+  cin>>option;
+  if (option != "1" && option != "2"){
+    return menu(Sec);
+  }else{
+    if(option == "1"){
+      menuAlumno(Sec);
     }
-} // TRUE
-
-void Profesor::crear_file(){
-    int materia,seccion,aprobado,reprobado;
-    string nombre2,ape,rut2;
-    int opcion = 1;
-    while(true){
-        cout<<"\n---Bienvenido al ingreso de notas manualmente.---\n\n";
-        cout<<"Seleccione el codigo de materia que imparte:\n"<<ID[0]<<" (0)\n"<<ID[1]<<" (1)\n"<<ID[2]<<" (2)\n"<<ID[3]<<" (3)\n"<<ID[4]<<" (4)\n: ";
-        cin>>materia;
-        if(materia < 0 || materia > 4){
-            cout<<"\nERROR INGRESAR DATOS...\n";
-            break;
-        }
-        cout<<"\nSeleccione la seccion:\n"<<nrc[0]<<" (0)\n"<<nrc[1]<<" (1)\n"<<nrc[2]<<" (2)\n: ";
-        cin>>seccion;
-        if(seccion < 0 || seccion > 2){
-            cout<<"\nERROR INGRESAR DATOS...\n";
-            break;
-        }
-        system("clear");
-        string name = nrc[seccion];
-        name += ID[materia];
-        name += ".txt";
-        ofstream f;
-        f.open(name, fstream::app);
-        while(opcion==1){
-            cout<<"Ingrese el nombre, apellido y rut del estudiante: \n"; 
-            cin>>nombre2>>ape>>rut2;
-            for(int i=0;i<4;i++){
-                cout<<"Ingrese la nota numero "<<i+1<<": ";
-                cin>>nt[i];
-            }
-            calcular_ND();
-            if(ND>=4){aprobado++;}
-            else{reprobado++;}
-            nota_alumno(rut2, materia);
-            f<<nombre2<<" "<<ape<<" "<<ND<<endl;
-            cout<<"\nDesea ingresar mas alumnos? (1 = si)/(0 = no): ";
-            system("clear");
-            cin>>opcion;
-            if(opcion==0){
-                break;
-            }
-        }
-        f.close();
-        cout<<"\nAprobados: "<<aprobado<<endl;
-        cout<<"Reprobados: "<<reprobado<<endl;
-        cout<<"\nListo :D\n";
-        break;
+    if(option == "2"){
+      menuDocente(Sec);
     }
-} // TRUE
+  }
+}
 
-void Profesor::nota_alumno(string rut2,int materia){
-    string estado = "Reprobado";
-    if(ND >= 4){
-        estado = "Aprobado";
+void menuDocente(Secciones Sec){
+  string rutDocente;
+  string sectionDocente;
+  string N_Texto;
+  cout<<"--------------------------------"<<endl;
+  cout<<"Ingrese su rut: "<<endl;
+  cout<<"--------------------------------"<<endl;  
+  cin>>rutDocente; 
+  cout<<"--------------------------------"<<endl; 
+  cout<<"Ingrese seccion: "<<endl;
+  cout<<"--------------------------------"<<endl; 
+  cin>>sectionDocente;
+  bool estado = buscarSeccion(sectionDocente);
+  if(estado == false){
+    return menuDocente(Sec);
+  }
+  string opcionA;
+  cout<<"--------------------------------"<<endl; 
+  cout<<"Ingresar archivo de texto sobre notas(1)"<<endl; 
+  cout<<"Ver notas ordenadas(2)"<<endl;
+  cin>>opcionA;
+  if(opcionA == "1"){
+    cout<<"--------------------------------"<<endl;
+    cout<<"Ingrese el archivo de texto (con .txt): "<<endl;
+    cout<<"--------------------------------"<<endl;
+    cin>>N_Texto;
+  
+    bool existe = archivo_existe(N_Texto);
+    if(existe == false){
+      return menuDocente(Sec);
     }
-    rut2 += ".txt";
-    ofstream f;
-    f.open(rut2, fstream::app);
-    f<<materia_nombres[materia]<<" "<<ND<<" "<<estado<<endl;
-    f.close();
-} // TRUE
-
-int menu(){
-    int x;
-    cout<<"\n--- Bienvenido al sistema de notas Unab ---\n\n";
-    cout<<"Registrar notas manualmente (1)"<<endl;
-    cout<<"Cargar archivo (2)"<<endl;
-    cout<<"Solicitar nota de alumno (3)"<<endl;
-    cout<<"Salir del menu (4)"<<endl;
-    cout<<"\nIngrese una opcion: ";
-    cin>>x;
-    return x;
-} // TRUE
-
-void Profesor::cargar_file(){
-    int materia,seccion, aprobado, reprobado;
-    while(true){
-        cout<<"\n---Bienvenido al ingreso de notas mediante archivo.txt.---\n\n";
-        cout<<"Seleccione el codigo de materia que imparte:\n"<<ID[0]<<" (0)\n"<<ID[1]<<" (1)\n"<<ID[2]<<" (2)\n"<<ID[3]<<" (3)\n"<<ID[4]<<" (4)\n: ";
-        cin>>materia;
-        if(materia < 0 || materia > 4){
-            cout<<"\nERROR INGRESAR DATOS...\n";
-            break;
-        }
-        cout<<"\nSeleccione la seccion:\n"<<nrc[0]<<" (0)\n"<<nrc[1]<<" (1)\n"<<nrc[2]<<" (2)\n: ";
-        cin>>seccion;
-        if(seccion < 0 || seccion > 2){
-            cout<<"\nERROR INGRESAR DATOS...\n";
-            break;
-        }
-        else{
-            string name;
-            name += nrc[seccion];
-            name += ID[materia];
-            name += ".txt";
-            ofstream fe;
-            ifstream f;
-            string filename;
-            string nom,ape,rut2;
-            cout<<"Ingrese el nombre nombre del archivo (sin .txt): ";
-            cin>>filename;
-            filename += ".txt";
-            f.open(filename, ios::in);
-            if(f.fail()){cout<<"\nEl archivo no existe...\n";break;}
-            fe.open(name, fstream::app);
-            while(!f.eof()){
-                f>>nom>>ape>>rut2>>nt[0]>>nt[1]>>nt[2]>>nt[3];
-                calcular_ND();
-                if(ND >= 4){aprobado++;}
-                else{reprobado++;}
-                fe<<nom<<" "<<ape<<" "<<ND<<endl;
-                nota_alumno(rut2, materia); 
-            }
-        cout<<"\nAprobados: "<<aprobado<<endl;
-        cout<<"Reprobados: "<<reprobado<<endl;
-        cout<<"\nRealizado :D\n";
-        break;    
-        }
+    vector<Student> alumnos = CrearAlumnos(N_Texto);
+    cout<<"Todos los alumnos han sido ingresados de manera correcta"<< endl;
+    if(sectionDocente == "PR001"){
+      Sec.Alumnos_PR001 = alumnos;
     }
+    if(sectionDocente == "BD002"){
+      Sec.Alumnos_BD002 = alumnos;
+    }
+    if(sectionDocente == "AE003"){
+      Sec.Alumnos_AE003 = alumnos;
+    }
+    if(sectionDocente == "DM004"){
+      Sec.Alumnos_DM004 = alumnos;
+    }
+    if(sectionDocente == "PP005"){
+      Sec.Alumnos_PP005 = alumnos;
+    } 
+  }else{
+    if(opcionA == "2"){
+      if(sectionDocente == "PR001"){
+        OrdenarNotas(Sec.Alumnos_PR001);
+      }
+      if(sectionDocente == "BD002"){
+        OrdenarNotas(Sec.Alumnos_BD002);
+      }
+      if(sectionDocente == "AE003"){
+        OrdenarNotas(Sec.Alumnos_AE003);
+      }
+      if(sectionDocente == "DM004"){
+        OrdenarNotas(Sec.Alumnos_DM004);
+      }
+      if(sectionDocente == "PP005"){
+        OrdenarNotas(Sec.Alumnos_PP005);
+      } 
+    }
+  }
+  //Con el codigo se asume que existen varios tipos de archivo los cuales estan designados para distintos ramos, cabe decir ( un archivo de texto para PP005 o un archivo para AE003)
+
+  cout<<"Desea volver al inicio (Y/N)"<< endl;
+  char res;
+  cin>>res;
+  if(res == 'Y' || res == 'y'){
+    menu(Sec);
+  }else{
+    menuDocente(Sec);
+  }
+}
+
+void menuAlumno(Secciones Sec){
+  string rutAlumno;
+  cout<<"--------------------------------"<<endl;
+  cout<<"Ingrese el rut del alumno"<<endl;
+  cin>>rutAlumno;
+  cout<<"--------------------------------"<<endl;
+  bool estado = false;
+  int posAlP;
+  int posAlB;
+  int posAlA;
+  int posAlD;
+  int posAlPAR;
+  for(int i = 0; i < 5; i++){
+    if(Sec.Alumnos_PR001.empty() == false){
+      if(Sec.Alumnos_PR001[i].rut == rutAlumno){
+        estado = true;
+        posAlP = i;
+      }
+    }
+    if(Sec.Alumnos_BD002.empty() == false){
+      if(Sec.Alumnos_BD002[i].rut == rutAlumno){
+        estado = true;
+        posAlB = i;
+      }
+    }
+    if(Sec.Alumnos_AE003.empty() == false){
+      if(Sec.Alumnos_AE003[i].rut == rutAlumno){
+        estado = true;
+        posAlA = i;
+      }
+    }
+    if(Sec.Alumnos_DM004.empty() == false){
+      if(Sec.Alumnos_DM004[i].rut == rutAlumno){
+        estado = true;
+        posAlD = i;
+      }
+    }
+    if(Sec.Alumnos_PP005.empty() == false){
+      if(Sec.Alumnos_PP005[i].rut == rutAlumno){
+        estado = true;
+        posAlPAR = i;
+      }
+    }
+  }
     
-} // TRUE
-
-int main() {
-    int opcion;
-    Profesor a;
-    alumno b;
-    do{
-        opcion = menu();
-        switch (opcion){
-            case 1:
-                a.crear_file();
-                break;
-            case 2:
-                a.cargar_file();
-                break;
-            case 3:
-                b.soli_nota();
-            break;
+  if(estado == false){
+    cout<<"El profesor no ha ingresado sus notas."<<endl;
+    menuAlumno(Sec);
+  }
+  cout<<"--------------------------------"<<endl;
+  cout<<"- Mostrar Notas(1)"<<endl;
+  cout<<"- Volver al menu(2)"<<endl;
+  string opcion;
+  cin>>opcion;
+  cout<<"--------------------------------"<<endl;
+  if(opcion == "1"){
+    for(int i = 0; i <= 4; i++){
+      if(Sec.Alumnos_PR001.empty() == false){
+        if(i == 0){
+          float Promedio = ObtenerPromedio(Sec.Alumnos_PR001, posAlP) ;
+          cout << "Programacion " << Promedio;
+          if(Promedio < 4){
+            cout << " Reprobado" <<endl;
+          }else{
+            cout << " Aprobado" <<endl;
+          }
         }
-    }while (opcion != 4);
-    
-    return 0;
+      }
+      if(Sec.Alumnos_BD002.empty() == false){
+        if(i == 1){
+          float Promedio = ObtenerPromedio(Sec.Alumnos_BD002, posAlB);
+          cout << "Base de datos " << Promedio;
+          if(Promedio < 4){
+            cout << " Reprobado" <<endl;
+          }else{
+            cout << " Aprobado" <<endl;
+          }
+        }
+      }
+      if(Sec.Alumnos_AE003.empty() == false){
+        if(i == 2){
+          float Promedio = ObtenerPromedio(Sec.Alumnos_AE003, posAlA);
+          cout << "Algoritmo y estructura de datos " << Promedio;
+          if(Promedio < 4){
+            cout << " Reprobado" <<endl;
+          }else{
+            cout << " Aprobado" <<endl;
+          }
+        }
+      }
+      if(Sec.Alumnos_DM004.empty() == false){
+        if(i == 3){
+          float Promedio = ObtenerPromedio(Sec.Alumnos_DM004, posAlD);
+          cout << "Desarrollo web y movil " << Promedio;
+          if(Promedio < 4){
+            cout << " Reprobado" <<endl;
+          }else{
+            cout << " Aprobado" <<endl;
+          }
+        }
+      }
+      if(Sec.Alumnos_PP005.empty() == false){
+        if(i == 4){
+          float Promedio = ObtenerPromedio(Sec.Alumnos_PP005, posAlPAR);
+          cout << "Paradigmas de programacion " << Promedio;
+          if(Promedio < 4){
+            cout << " Reprobado" <<endl;
+          }else{
+            cout << " Aprobado" <<endl;
+          }
+        }
+      }
+    }
+  }else{
+    menu(Sec);
+  }
+}
+
+bool buscarSeccion(string sec){
+  for(int i=0; i < 5; i++){
+    if(sec == cod[i]){
+      return true;
+    }
+  }
+  return false;
+}
+
+bool archivo_existe(string nombre){
+	ifstream archivo(nombre.c_str());
+	return archivo.good();
+}
+
+vector<Student> CrearAlumnos(string name){
+  vector<string> lines;
+  string line;
+  ifstream myfile (name);
+  if (myfile.is_open())
+  {
+      while ( getline (myfile,line) )
+      {
+        lines.push_back(line);
+      }
+        myfile.close();
+    }
+
+  vector<Student> Alumnos;
+  for(int a = 0; a < lines.size(); a++){
+    vector<string> internal;
+    stringstream ss(lines[a]);
+    string tok;
+    while(getline(ss, tok, ' ')) {        
+        internal.push_back(tok);
+    }
+    //Sacar nombre
+    string _name = internal[0] + internal[1];
+    string _rut = internal[2];
+    //Asumiendo que las notas son 4
+    vector<string> notasA;
+    for(int i = 0; i <= 3; i++){
+      notasA.push_back(internal[3+i]);
+    }
+    Student s(_name, _rut, notasA);
+    Alumnos.push_back(s);
+  }
+
+  return Alumnos;
+}
+
+float ObtenerPromedio(vector<Student> S, int pos){
+  float suma;
+  for(int i = 0; i < S[pos].notas.size(); i++){
+    suma = stoi(S[pos].notas[i]) + suma;
+  }
+  float promedio = suma/S[pos].notas.size();
+  return promedio;
+}
+
+void OrdenarNotas(vector<Student> verE){
+  for(int i = 0; i < verE.size(); i++){
+    float pro = ObtenerPromedio(verE, i);
+    cout << verE[i].name << " " << pro << endl;
+  }
 }

@@ -1,0 +1,83 @@
+
+import java.util.Scanner;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author Alumno
+ */
+public class NewMain {
+    float A,B,i=0,j,ganado,cuenta,años,dinero;
+    double [] ComA=new double [10], ComB=new double [10];
+    String [] nombre=new String[10];
+    char res='s';
+    NewMain () {};
+    public void datoenviados(){
+         Scanner leer= new Scanner(System.in);
+         while(res=='S'){
+             System.out.println("1) Cuenta ahorro");
+             System.out.println("2) Cuenta corriente");
+             System.out.println("3) Cuenta a plazo fijo");
+             System.out.println("Que tipo de cuenta desea abrir: ");
+             cuenta=leer.nextInt();
+             if(cuenta == 1){
+                System.out.println("Por cuantos años va abrir la cuenta: ");
+                años=leer.nextInt(); 
+                años = (float) (años*0.01);
+                System.out.println("Cuanto dinero va a depositar: ");
+                dinero=leer.nextInt(); 
+                ganado = dinero*años;
+                System.out.println("Dinero ganado "+ganado);
+                
+             }
+             if(cuenta == 2){
+                System.out.println("Por cuantos años va abrir la cuenta: ");
+                años=leer.nextInt(); 
+                años = (float) (años*0.005);
+                System.out.println("Cuanto dinero va a depositar: ");
+                dinero=leer.nextInt(); 
+                ganado = dinero*años;
+                System.out.println("Dinero ganado "+ganado);
+             }
+             if(cuenta == 3){
+                System.out.println("opciones disponibles: ");
+                System.out.println("1) 3 Meses");
+                System.out.println("2) 6 Meses");
+                System.out.println("Por cuantos meses va abrir la cuenta: ");
+                años=leer.nextInt(); 
+                if(años==1){
+                    años=3;
+                    años=(float) (3*0.012);
+                    System.out.println("Cuanto dinero va a depositar: ");
+                    dinero=leer.nextInt();
+                    ganado=dinero*años;
+                    System.out.println("Dinero ganado "+ganado);
+                }
+                if(años==2){
+                    años=6;
+                    años=(float) (6*0.012);
+                    System.out.println("Cuanto dinero va a depositar: ");
+                    dinero=leer.nextInt();
+                    ganado=dinero*años;
+                    System.out.println("Dinero ganado "+ganado);    
+                }
+                System.out.println("Desea continuar Si=S o No=N: ");
+                res=leer.next().charAt(res);
+            }
+        }   
+    }
+}
+
+
+public class principal {
+    public static void main(String[] args) {
+        NewMain v=new NewMain();
+        v.datoenviados();
+    }
+    
+}
